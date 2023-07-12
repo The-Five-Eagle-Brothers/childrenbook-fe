@@ -1,47 +1,37 @@
-import React, { useRef, useEffect } from "react";
-import * as THREE from "three";
+import Slider from "react-slick";
+import Book from "./atoms/Book";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Option from "./atoms/Option";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { bookSelectedState } from "../states/bookSelectedState";
 
 export default function Main() {
-  const sceneRef = useRef(null);
+  const settings = {
+    // className: "center",
+    centerMode: true,
+    dots: true,
+    centerPadding: "60px",
+    focusOnSelect: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+  };
 
-  useEffect(() => {
-    // Three.js scene setup
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    const renderer = new THREE.WebGLRenderer();
+  const bookSelected = useRecoilValue(bookSelectedState);
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    sceneRef.current.appendChild(renderer.domElement);
-
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    camera.position.z = 5;
-
-    // Animation loop
-    const animate = function () {
-      requestAnimationFrame(animate);
-
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // Clean up on unmount
-    return () => {
-      sceneRef.current.removeChild(renderer.domElement);
-    };
-  }, []);
-
-  return <div ref={sceneRef} />;
+  return (
+    <div className="overflow-hidden">
+      <div>
+        <span className="text-4xl">Tale adventure</span>
+        <Slider {...settings} className="z-1">
+          <Book title="어린왕자" color={"bg-blue-300"} />
+          <Book title="어린왕자" color={"bg-red-300"} />
+          <Book title="어린왕자" color={"bg-yellow-300"} />
+          <Book title="어린왕자" color={"bg-green-300"} />
+        </Slider>
+      </div>
+      {bookSelected !== "" && <Option />}
+    </div>
+  );
 }
