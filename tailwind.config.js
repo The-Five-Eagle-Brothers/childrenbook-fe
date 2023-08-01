@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         hand: ["handFont", "Arial", "sans-serif"],
+        niconne: ["Niconne", "Arial", "sans-serif"],
       },
     },
   },
