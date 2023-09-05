@@ -196,12 +196,13 @@ export default function RabbitAndTurtle() {
         player.modelMesh &&
         rabbit.modelMesh &&
         Math.abs(player.modelMesh.position.x - rabbit.modelMesh.position.x) <
-          3 &&
-        Math.abs(player.modelMesh.position.z - rabbit.modelMesh.position.z) < 3
+          1.5 &&
+        Math.abs(player.modelMesh.position.z - rabbit.modelMesh.position.z) <
+          1.5
       ) {
         if (toastCount === 1) {
           toastCount += 1;
-          setTextIndex(textIndex + 1);
+          setTextIndex(2);
         }
       }
       renderer.render(scene, camera);
@@ -210,9 +211,9 @@ export default function RabbitAndTurtle() {
     animate();
 
     // Clean up on unmount
-    // return () => {
-    //   sceneRef.current.removeChild(renderer.domElement);
-    // };
+    return () => {
+      sceneRef.current.removeChild(renderer.domElement);
+    };
   }, [sceneRef.current]);
 
   useEffect(() => {
@@ -220,7 +221,7 @@ export default function RabbitAndTurtle() {
   }, [loadBool]);
 
   useEffect(() => {
-    setTextIndex(1);
+    if (toastBool && textIndex === 0) setTextIndex(1);
   }, [toastBool]);
 
   return (

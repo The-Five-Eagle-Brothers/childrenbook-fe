@@ -23,7 +23,7 @@ export default function Main() {
         <div
           className="w-[370px] h-[525px] bg-[url('/src/assets/images/rabbit.png')] bg-cover cursor-[url('/src/assets/images/cursor.png'),_pointer]"
           onClick={() => {
-            navigate("/rabbitAndTurtle");
+            navigate("/rabbitAndTurtleIntro");
           }}
         ></div>
       </div>
