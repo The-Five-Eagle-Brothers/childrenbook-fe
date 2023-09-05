@@ -12,7 +12,7 @@ export default function Start() {
         Adventure
       </span>
       <div
-        className="w-[250px] h-[56px] text-2xl font-semibold flex justify-center items-center text-white rounded-md mt-10 cursor-pointer bg-[url('/src/assets/images/startBtn.png')] bg-cover"
+        className="w-[250px] h-[60px] text-2xl font-semibold flex justify-center items-center text-white rounded-md mt-10 cursor-pointer bg-[url('/src/assets/images/startBtn.png')] bg-cover"
         onClick={() => {
           navigate("/main");
         }}

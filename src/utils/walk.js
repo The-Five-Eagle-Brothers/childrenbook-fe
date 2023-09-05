@@ -1,6 +1,5 @@
 export default function walk(keyController) {
   let directionOffset = 0;
-
   if (keyController.keys["KeyW"] || keyController.keys["ArrowUp"]) {
     if (keyController.keys["KeyA"] || keyController.keys["ArrowLeft"]) {
       directionOffset = -Math.PI / 4 - Math.PI / 2; // s + d
