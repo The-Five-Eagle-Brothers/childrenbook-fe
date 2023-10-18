@@ -7,17 +7,18 @@ export class King {
         if (!child.isMesh) return;
         if (child.isMesh) {
           child.castShadow = true;
+          child.receiveShadow = true;
           child.frustumCulled = false;
         }
       });
 
       this.modelMesh = glb.scene;
       this.modelMesh.scale.set(0.43, 0.43, 0.43);
-      this.modelMesh.rotation.x = Math.PI / 10;
+      // this.modelMesh.rotation.x = Math.PI / 10;
 
       this.modelMesh.position.x = 3;
       this.modelMesh.position.y = 4;
-      this.modelMesh.position.z = -3;
+      this.modelMesh.position.z = -2;
 
       info.scene.add(this.modelMesh);
 

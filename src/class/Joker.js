@@ -7,6 +7,7 @@ export class Joker {
         if (!child.isMesh) return;
         if (child.isMesh) {
           child.castShadow = true;
+          child.receiveShadow = true;
           child.frustumCulled = false;
         }
       });
