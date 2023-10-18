@@ -17,7 +17,7 @@ export default function Main() {
         <div
           className="w-[370px] h-[525px] bg-[url('/src/assets/images/littlePrince.png')] bg-cover cursor-[url('/src/assets/images/cursor.png'),_pointer]"
           onClick={() => {
-            navigate("/littlePrince");
+            window.location.replace("https://love-and-gravity.web.app/intro");
           }}
         ></div>
         <div
