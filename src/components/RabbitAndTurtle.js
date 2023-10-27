@@ -1,15 +1,9 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
-import { Player } from "../class/Player";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { Light } from "../lights/Light";
-import { Road } from "../class/Road";
 import { KeyController } from "../utils/KeyController";
 import walkCheck from "../utils/walkCheck";
 import walk from "../utils/walk";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { LoadingManager } from "three";
 import loadingGif from "../assets/images/loading.GIF";
 import { Turtle } from "../class/Turtle";
@@ -17,6 +11,7 @@ import { Tree } from "../class/Tree";
 import { Map } from "../class/Map";
 import { Rabbit } from "../class/Rabbit";
 import gsap from "gsap";
+import { RabbitLight } from "../lights/RabbitLight";
 
 export default function RabbitAndTurtle() {
   const sceneRef = useRef(null);
@@ -70,7 +65,7 @@ export default function RabbitAndTurtle() {
     sceneRef.current.appendChild(renderer.domElement);
 
     // light
-    const light = new Light({ scene });
+    new RabbitLight({ scene });
 
     // objects
     // ---------

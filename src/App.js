@@ -6,6 +6,7 @@ import LittlePrince from "./components/LittlePrince";
 import RabbitAndTurtle from "./components/RabbitAndTurtle";
 import VideoIntro from "./components/VideoIntro";
 import Redirection from "./components/Redirection";
+import Intro from "./components/LittlePrinceIntro";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/main" element={<Main />} />
         <Route path="/" element={<Start />} />
         <Route path="/littlePrince" element={<LittlePrince />} />
+        <Route path="/intro" element={<Intro />} />
         <Route path="/rabbitAndTurtle" element={<RabbitAndTurtle />} />
         <Route path="/rabbitAndTurtleIntro" element={<VideoIntro />} />
         <Route exact path="/kakao/callback" element={<Redirection />} />
