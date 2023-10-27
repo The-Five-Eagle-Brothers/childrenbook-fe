@@ -2,10 +2,10 @@ import * as THREE from "three";
 
 export class Light {
   constructor(info) {
-    const ambientLight = new THREE.AmbientLight("#ffffff", 1.1);
+    const ambientLight = new THREE.AmbientLight("#EEEEEE", 1.2);
     info.scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight("white", 0.4);
+    const directionalLight = new THREE.DirectionalLight("white", 0.8);
     const directionalLightOriginPosition = new THREE.Vector3(30, 10, 30);
     directionalLight.position.x = directionalLightOriginPosition.x;
     directionalLight.position.y = directionalLightOriginPosition.y;
