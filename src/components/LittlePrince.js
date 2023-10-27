@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import * as THREE from "three";
 import { Player } from "../class/Player";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { Light } from "../lights/Light";
 import { Road } from "../class/Road";
 import { KeyController } from "../utils/KeyController";
 import walkCheck from "../utils/walkCheck";
@@ -13,6 +12,7 @@ import { Salary } from "../class/Salary";
 import { LightModel } from "../class/LightModel";
 import { LoadingManager } from "three";
 import loadingGif from "../assets/images/loading.GIF";
+import { PrinceLight } from "../lights/PrinceLight";
 
 export default function LittlePrince() {
   const sceneRef = useRef(null);
@@ -26,10 +26,16 @@ export default function LittlePrince() {
     const rotateAngle = new THREE.Vector3(0, 1, 0);
     const walkDirection = new THREE.Vector3();
 
+    // Raycasting
+    let mouse = new THREE.Vector2();
+    let isPressed = false; // 마우스를 누르고 있는 상태
+    const meshes = []; // 마우스 체크 대상들이 들어 있는 배열
+    const raycaster = new THREE.Raycaster();
+
     // Three.js scene setup
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
-      75,
+      55,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
@@ -47,10 +53,10 @@ export default function LittlePrince() {
     sceneRef.current.appendChild(renderer.domElement);
 
     // light
-    const light = new Light({ scene });
+    new PrinceLight({ scene });
 
     // objects
-    // ---------
+    // ---------------------------------------------------------------
     // gltf onjects
     const MANAGER = new LoadingManager();
 
@@ -65,7 +71,7 @@ export default function LittlePrince() {
       modelSrc: "fastfast.glb",
     });
 
-    const road = new Road({
+    new Road({
       scene,
       gltfLoader,
       modelSrc: "road.glb",
@@ -74,24 +80,28 @@ export default function LittlePrince() {
     const king = new King({
       scene,
       gltfLoader,
-      modelSrc: "kingHeadPlanet.glb",
+      meshes,
+      modelSrc: "king.glb",
     });
 
     const joker = new Joker({
       scene,
       gltfLoader,
+      meshes,
       modelSrc: "jokerSizeup.glb",
     });
 
     const salary = new Salary({
       scene,
       gltfLoader,
-      modelSrc: "salarySizeup.glb",
+      meshes,
+      modelSrc: "salary.glb",
     });
 
     const lightModel = new LightModel({
       scene,
       gltfLoader,
+      meshes,
       modelSrc: "lightSizeup.glb",
     });
 
@@ -112,13 +122,67 @@ export default function LittlePrince() {
     const starField = new THREE.Points(geometry, material);
     scene.add(starField);
 
+    // Mouse Related
+    // 마우스 좌표를 three.js에 맞게 변환
+    function calculateMousePosition(e) {
+      mouse.x = (e.clientX / sceneRef.current.clientWidth) * 2 - 1;
+      mouse.y = -((e.clientY / sceneRef.current.clientHeight) * 2 - 1);
+    }
+
+    function checkIntersects() {
+      const intersects = raycaster.intersectObjects(meshes);
+
+      for (const item of intersects) {
+        // console.log(item);
+        if (item.object.name.includes("king")) {
+          console.log("king");
+          break;
+        }
+      }
+    }
+
+    // 변환된 마우스 좌표를 이용해 래이캐스팅
+    function raycasting() {
+      raycaster.setFromCamera(mouse, camera);
+      checkIntersects();
+    }
+
+    // 마우스 이벤트
+    sceneRef.current.addEventListener("mousedown", (e) => {
+      isPressed = true;
+      calculateMousePosition(e);
+    });
+    sceneRef.current.addEventListener("mouseup", () => {
+      isPressed = false;
+    });
+
+    sceneRef.current.addEventListener("mousemove", (e) => {
+      if (isPressed) {
+        calculateMousePosition(e);
+      }
+    });
+
+    // 터치 이벤트
+    sceneRef.current.addEventListener("touchstart", (e) => {
+      isPressed = true;
+      calculateMousePosition(e.touches[0]);
+    });
+    sceneRef.current.addEventListener("touchend", () => {
+      isPressed = false;
+    });
+    sceneRef.current.addEventListener("touchmove", (e) => {
+      if (isPressed) {
+        calculateMousePosition(e.touches[0]);
+      }
+    });
+
     // Animation loop
     const clock = new THREE.Clock();
     const keyController = new KeyController();
 
     const animate = function () {
       const delta = clock.getDelta();
-      requestAnimationFrame(animate);
+      renderer.setAnimationLoop(animate);
       if (player.mixer) player.mixer.update(delta);
       if (king.mixer) king.mixer.update(delta);
       if (joker.mixer) joker.mixer.update(delta);
@@ -163,6 +227,11 @@ export default function LittlePrince() {
         } else {
           player.actions[2].play();
           player.actions[1].stop();
+
+          // 캐릭터가 멈춰있고 클릭이 있을 때 확인
+          if (isPressed) {
+            raycasting();
+          }
         }
       }
 
@@ -172,9 +241,9 @@ export default function LittlePrince() {
     animate();
 
     // Clean up on unmount
-    // return () => {
-    //   sceneRef.current.removeChild(renderer.domElement);
-    // };
+    return () => {
+      sceneRef.current.removeChild(renderer.domElement);
+    };
   }, []);
 
   useEffect(() => {
