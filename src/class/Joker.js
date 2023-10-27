@@ -1,4 +1,11 @@
 import { AnimationMixer } from "three";
+import {
+  INTERVAL_X,
+  STANDARD_POSITION_X,
+  STANDARD_POSITION_Y,
+  STANDARD_POSITION_Z,
+  STANDARD_SCALE,
+} from "../const/LittlePrincePosition";
 
 export class Joker {
   constructor(info) {
@@ -13,14 +20,15 @@ export class Joker {
       });
 
       this.modelMesh = glb.scene;
-      this.modelMesh.scale.set(0.5, 0.5, 0.5);
-      this.modelMesh.rotation.x = Math.PI / 10;
+      this.modelMesh.scale.set(STANDARD_SCALE, STANDARD_SCALE, STANDARD_SCALE);
 
-      this.modelMesh.position.x = 10;
-      this.modelMesh.position.y = 4;
-      this.modelMesh.position.z = -2;
+      this.modelMesh.position.x = STANDARD_POSITION_X + INTERVAL_X;
+      this.modelMesh.position.y = STANDARD_POSITION_Y;
+      this.modelMesh.position.z = STANDARD_POSITION_Z;
 
       info.scene.add(this.modelMesh);
+      this.modelMesh.children[0].name = "joker";
+      info.meshes.push(this.modelMesh);
 
       this.actions = [];
 
