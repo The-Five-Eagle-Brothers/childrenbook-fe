@@ -10,9 +10,9 @@ export class Road {
       });
 
       this.modelMesh = glb.scene;
-      this.modelMesh.scale.set(30, 30, 30);
-      this.modelMesh.position.x = 5;
-      this.modelMesh.position.z = 0.5;
+      this.modelMesh.scale.set(35, 35, 35);
+      this.modelMesh.position.x = 15;
+      this.modelMesh.position.z = 1;
       this.modelMesh.position.y = -0.5;
 
       info.scene.add(this.modelMesh);
