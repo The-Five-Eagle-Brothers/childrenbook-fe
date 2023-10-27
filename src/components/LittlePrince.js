@@ -240,6 +240,19 @@ export default function LittlePrince() {
 
     animate();
 
+    // resize
+    window.addEventListener("resize", onResize);
+
+    function onResize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(width, height);
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+
     // Clean up on unmount
     return () => {
       sceneRef.current.removeChild(renderer.domElement);
