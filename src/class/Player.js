@@ -26,7 +26,7 @@ export class Player {
       this.modelMesh.children[0].children[0].children[0].material.transparent = true;
       this.modelMesh.children[0].children[0].children[1].material.transparent = true;
       this.modelMesh.rotation.y = Math.PI / 2;
-      this.modelMesh.position.z = -2;
+      this.modelMesh.position.z = 1;
       this.modelMesh.name = "model";
       info.scene.add(this.modelMesh);
 
