@@ -6,6 +6,7 @@ module.exports = {
       fontFamily: {
         hand: ["handFont", "Arial", "sans-serif"],
         niconne: ["Niconne", "Arial", "sans-serif"],
+        NanumSquareRound: ["NanumSquareRound", "Arial", "sans-serif"],
       },
     },
   },
