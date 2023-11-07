@@ -13,12 +13,14 @@ import { LightModel } from "../class/LightModel";
 import { LoadingManager } from "three";
 import loadingGif from "../assets/images/loading.GIF";
 import { PrinceLight } from "../lights/PrinceLight";
+import SaveModal from "./atoms/SaveModal";
 
 export default function LittlePrince() {
   const sceneRef = useRef(null);
   const loadRef = useRef(null);
 
   const [loadBool, setLoadBool] = useState(false);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     let angle = 0;
@@ -254,9 +256,9 @@ export default function LittlePrince() {
     }
 
     // Clean up on unmount
-    return () => {
-      sceneRef.current.removeChild(renderer.domElement);
-    };
+    // return () => {
+    //   sceneRef.current.removeChild(renderer.domElement);
+    // };
   }, []);
 
   useEffect(() => {
@@ -265,26 +267,45 @@ export default function LittlePrince() {
 
   return (
     <>
-      <div
-        ref={loadRef}
-        style={{
-          height: "100vh",
-          width: "100vw",
-          overflow: "hidden",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          backgroundColor: "#FFFFFF",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div className="w-80">
-          <img src={loadingGif} alt="gif" loop="infinite" />
+      <div>
+        <div
+          ref={loadRef}
+          style={{
+            height: "100vh",
+            width: "100vw",
+            overflow: "hidden",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#FFFFFF",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div className="w-80">
+            <img src={loadingGif} alt="gif" loop="infinite" />
+          </div>
         </div>
       </div>
-      <div ref={sceneRef} />
+
+      <div>
+        <div ref={sceneRef}>
+          <div
+            className="h-[64px] w-[44px] absolute top-6 right-6 bg-[url('/src/assets/images/exit.png')] bg-cover"
+            onClick={() => {
+              setModal(true);
+            }}
+          ></div>
+          {modal && (
+            <SaveModal
+              setModal={setModal}
+              taleBookName={"어린왕자"}
+              status={"princeRoad"}
+            ></SaveModal>
+          )}
+        </div>
+      </div>
     </>
   );
 }
