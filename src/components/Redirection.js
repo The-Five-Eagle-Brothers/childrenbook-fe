@@ -33,7 +33,22 @@ export default function Redirection() {
           })
           .then((res) => {
             if (res.data.statusCode === "OK") {
-              navigate("/main");
+              console.log(res.data.data.appToken);
+              localStorage.setItem("token", res.data.data.appToken);
+              axios
+                .get(`${process.env.REACT_APP_URL}member/valid`, {
+                  headers: {
+                    Authorization: `Bearer ${res.data.data.appToken}`,
+                  },
+                })
+                .then((res) => {
+                  console.log(res.data.data);
+                  if (res.data.data !== null) {
+                    navigate("/main");
+                  } else {
+                    navigate("/onBoarding");
+                  }
+                });
             }
           });
       });
