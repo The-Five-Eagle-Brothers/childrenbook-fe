@@ -1,4 +1,4 @@
-# Tale-Adventure
+# Tale-Adventure-Web
 
 ```
 yarn start
