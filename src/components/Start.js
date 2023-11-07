@@ -5,19 +5,11 @@ export default function Start() {
   };
 
   return (
-    <div className="flex items-center justify-center flex-col h-screen bg-[url('/src/assets/images/bg.png')] bg-cover">
-      <span className="text-[200px] font-niconne leading-[255px] text-center text-white">
-        Tale
-      </span>
-      <span className="text-[200px] mt-[-40px] font-niconne leading-[255px] text-center text-white">
-        Adventure
-      </span>
+    <div className="flex items-center justify-center flex-col h-screen w-screen bg-[url('/src/assets/images/bg.png')] bg-cover font-NanumSquareRound">
       <div
-        className="w-[250px] h-[60px] text-2xl font-semibold flex justify-center items-center text-white rounded-md mt-10 cursor-pointer bg-[url('/src/assets/images/startBtn.png')] bg-cover"
+        className="w-[250px] h-[60px] text-2xl font-semibold flex justify-center items-center text-white rounded-md cursor-pointer bg-[url('/src/assets/images/kakao.png')] bg-cover mt-[20%]"
         onClick={handleLogin}
-      >
-        START
-      </div>
+      ></div>
     </div>
   );
 }
