@@ -12,6 +12,8 @@ import { Map } from "../class/Map";
 import { Rabbit } from "../class/Rabbit";
 import gsap from "gsap";
 import { RabbitLight } from "../lights/RabbitLight";
+import SaveModal from "./atoms/SaveModal";
+import { Flag } from "../class/Flag";
 
 export default function RabbitAndTurtle() {
   const sceneRef = useRef(null);
@@ -79,14 +81,20 @@ export default function RabbitAndTurtle() {
     const MANAGER = new LoadingManager();
 
     MANAGER.onLoad = function () {
-      scene.add(sphere);
+      // scene.add(sphere);
       setLoadBool(true);
     };
     const gltfLoader = new GLTFLoader(MANAGER);
 
-    sphere.position.x = -1.6;
-    sphere.position.y = 1.1;
-    sphere.position.z = 11.6;
+    // sphere.position.x = -1.6;
+    // sphere.position.y = 1.1;
+    // sphere.position.z = 11.6;
+
+    const flag = new Flag({
+      scene,
+      gltfLoader,
+      modelSrc: "flag.glb",
+    });
 
     const player = new Turtle({
       scene,
@@ -174,10 +182,10 @@ export default function RabbitAndTurtle() {
 
       if (
         player.modelMesh &&
-        Math.abs(player.modelMesh.position.x - sphere.position.x) < 3 &&
-        Math.abs(player.modelMesh.position.z - sphere.position.z) < 3
+        Math.abs(player.modelMesh.position.x - flag.modelMesh.position.x) < 3 &&
+        Math.abs(player.modelMesh.position.z - flag.modelMesh.position.z) < 3
       ) {
-        scene.remove(sphere);
+        scene.remove(flag.modelMesh);
         if (toastCount === 0) {
           toastCount += 1;
           setToastBool(true);
@@ -205,10 +213,23 @@ export default function RabbitAndTurtle() {
 
     animate();
 
+    // resize
+    window.addEventListener("resize", onResize);
+
+    function onResize() {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(width, height);
+
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+    }
+
     // Clean up on unmount
-    return () => {
-      sceneRef.current.removeChild(renderer.domElement);
-    };
+    // return () => {
+    //   sceneRef.current.removeChild(renderer.domElement);
+    // };
   }, [sceneRef.current]);
 
   useEffect(() => {
@@ -219,51 +240,73 @@ export default function RabbitAndTurtle() {
     if (toastBool && textIndex === 0) setTextIndex(1);
   }, [toastBool]);
 
+  const [modal, setModal] = useState(false);
+
   return (
     <>
-      <div
-        ref={loadRef}
-        style={{
-          height: "100vh",
-          width: "100vw",
-          overflow: "hidden",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          backgroundColor: "#FFFFFF",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div className="w-80">
-          <img src={loadingGif} alt="gif" loop="infinite" />
+      <div>
+        <div
+          ref={loadRef}
+          style={{
+            height: "100vh",
+            width: "100vw",
+            overflow: "hidden",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            backgroundColor: "#FFFFFF",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div className="w-80">
+            <img src={loadingGif} alt="gif" loop="infinite" />
+          </div>
         </div>
       </div>
-      <div ref={sceneRef}>
-        {loadBool ? (
-          <div
-            className="text-3xl font-bold"
-            style={{
-              height: "60px",
-              width: "100vw",
-              overflow: "hidden",
-              position: "absolute",
-              bottom: 40,
-              backgroundColor: "#FFFFFF",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onClick={() => {
-              if (textIndex >= 2) {
-                setTextIndex(textIndex + 1);
-              }
-            }}
-          >
-            {textArr[textIndex]}
-          </div>
-        ) : null}
+
+      <div>
+        <div ref={sceneRef}>
+          {loadBool ? (
+            <>
+              <div
+                className="text-3xl font-bold"
+                style={{
+                  height: "60px",
+                  width: "100vw",
+                  overflow: "hidden",
+                  position: "absolute",
+                  bottom: 40,
+                  backgroundColor: "#FFFFFF",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  if (textIndex >= 2) {
+                    setTextIndex(textIndex + 1);
+                  }
+                }}
+              >
+                {textArr[textIndex]}
+              </div>
+              <div
+                className="h-[64px] w-[44px] absolute top-6 right-6 bg-[url('/src/assets/images/exit.png')] bg-cover"
+                onClick={() => {
+                  setModal(true);
+                }}
+              ></div>
+              {modal && (
+                <SaveModal
+                  setModal={setModal}
+                  taleBookName={"토끼와 거북이"}
+                  status={"rabbitAndTurtle"}
+                ></SaveModal>
+              )}
+            </>
+          ) : null}
+        </div>
       </div>
     </>
   );

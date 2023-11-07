@@ -30,6 +30,7 @@ import { GrowFlower } from "../class/GrowFlower";
 import { CustomEase } from "gsap/CustomEase";
 import { Arrow } from "../class/Arrow";
 import video from "../video/loadingVideo.mp4";
+import SaveModal from "./atoms/SaveModal";
 
 function Intro() {
   const navigate = useNavigate();
@@ -60,6 +61,7 @@ function Intro() {
   const [fish, setFish] = useState(false);
   const [pullMode, setPullMode] = useState(0);
   const [quest, setQuest] = useState("");
+  const [modal, setModal] = useState(false);
 
   const width = document.body.clientWidth;
   const height = document.body.clientHeight;
@@ -1418,9 +1420,9 @@ function Intro() {
               scene.background = new THREE.Color("black");
               setTimeout(() => {
                 // navigate("/snakeEnd", { replace: false });
-                // navigate(0);
-                snakeEndRef.current = true;
-                setSnakeEndBool(true);
+                navigate("/princeRoad");
+                // snakeEndRef.current = true;
+                // setSnakeEndBool(true);
               }, 1000);
             }
           }
@@ -1580,31 +1582,31 @@ function Intro() {
   }, []);
 
   useEffect(() => {
-    if (infoRemove) {
+    if (infoRemove && infoRef.current) {
       infoRef.current.remove();
     }
   }, [infoRemove]);
 
   useEffect(() => {
-    if (infoFlowerRemove) {
+    if (infoFlowerRemove && flowerInfoRef.current) {
       flowerInfoRef.current.remove();
     }
   }, [infoFlowerRemove]);
 
   useEffect(() => {
-    if (infoBaoRemove) {
+    if (infoBaoRemove && baoInfoRef.current) {
       baoInfoRef.current.remove();
     }
   }, [infoBaoRemove]);
 
   useEffect(() => {
-    if (infoGlassFlowerRemove) {
+    if (infoGlassFlowerRemove && glassInfoRef.current) {
       glassInfoRef.current.remove();
     }
   }, [infoGlassFlowerRemove]);
 
   useEffect(() => {
-    if (loadBool) {
+    if (loadBool && loadingRef.current) {
       loadingRef.current.remove();
     }
   }, [loadBool]);
@@ -1628,283 +1630,57 @@ function Intro() {
   return (
     <>
       {/* Loading Page */}
-      <div
-        className="font-hand"
-        style={{
-          height: "100vh",
-          width: "100vw",
-          overflow: "hidden",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          backgroundColor: "#75c1e7",
-          color: "black",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        ref={loadingRef}
-      >
-        <label
-          style={{
-            position: "absolute",
-            bottom: 120,
-            borderRadius: 10,
-          }}
-          className="text-xl mb-5"
-        >
-          착륙 준비중..
-        </label>
-        <progress
-          id="progress2"
-          style={{
-            position: "absolute",
-            bottom: 120,
-            borderRadius: 10,
-          }}
-          value={loadingVal}
-          max={100}
-        ></progress>
-        <video width={"100%"} height={"100%"} autoPlay="autoPlay">
-          <source src={video} type="video/mp4" />
-        </video>
-      </div>
-      {/* grow flower */}
-      <div
-        className="font-hand"
-        style={
-          infoFlowerBool
-            ? {
-                height: "100vh",
-                width: "100vw",
-                overflow: "hidden",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                backgroundColor: "#00000080",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-              }
-            : {
-                height: "100vh",
-                width: "100vw",
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                left: 0,
-                display: "none",
-              }
-        }
-        ref={flowerInfoRef}
-      >
+      <div>
         <div
+          className="font-hand"
           style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}>
-            <h3 className="text-2xl">
-              장미는 물을 좋아했어. 물없이는 살 수 없었지..
-            </h3>
-          </div>
-          <button
-            style={{
-              width: 150,
-              height: 40,
-              borderRadius: 40,
-              backgroundColor: "#FFFFFFC4",
-              color: "black",
-              cursor: "pointer",
-              marginTop: 30,
-            }}
-            onClick={() => {
-              setInfoFlowerBool(false);
-              setInfoFlowerRemove(true);
-              setQuest("오른쪽으로 이동해 장미와의 또 다른 추억을 찾아보세요");
-            }}
-          >
-            확인
-          </button>
-        </div>
-      </div>
-      {/* bao */}
-      <div
-        className="font-hand"
-        style={
-          infoBaoBool
-            ? {
-                height: "100vh",
-                width: "100vw",
-                overflow: "hidden",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                backgroundColor: "#00000080",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-              }
-            : {
-                height: "100vh",
-                width: "100vw",
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                left: 0,
-                display: "none",
-              }
-        }
-        ref={baoInfoRef}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}>
-            <h3 className="text-2xl">
-              바오밥나무가 자라면 장미가 위험해 다 크기 전에 뽑아줘야했지..
-            </h3>
-          </div>
-          <button
-            style={{
-              width: 150,
-              height: 40,
-              borderRadius: 40,
-              backgroundColor: "#FFFFFFC4",
-              color: "black",
-              cursor: "pointer",
-              marginTop: 30,
-            }}
-            onClick={() => {
-              setInfoBaoBool(false);
-              setInfoBaoRemove(true);
-              setQuest("오른쪽으로 이동해 장미와의 또 다른 추억을 찾아보세요");
-            }}
-          >
-            확인
-          </button>
-        </div>
-      </div>
-      {/* flower glass */}
-      <div
-        className="font-hand"
-        style={
-          infoGlassFlowerBool
-            ? {
-                height: "100vh",
-                width: "100vw",
-                overflow: "hidden",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                backgroundColor: "#00000080",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-              }
-            : {
-                height: "100vh",
-                width: "100vw",
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                left: 0,
-                display: "none",
-              }
-        }
-        ref={glassInfoRef}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}>
-            <h3 className="text-2xl whitespace-pre-wrap">
-              {
-                "저녁이 되면 장미에게 유리관을 덮어줘야 했어\n 내가 사는 행성은 장미에게 너무 추웠거든"
-              }
-            </h3>
-          </div>
-          <button
-            style={{
-              width: 150,
-              height: 40,
-              borderRadius: 40,
-              backgroundColor: "#FFFFFFC4",
-              color: "black",
-              cursor: "pointer",
-              marginTop: 30,
-            }}
-            onClick={() => {
-              setInfoGlassFlowerBool(false);
-              setInfoGlassFlowerRemove(true);
-              setQuest("보아뱀을 찾아보세요");
-            }}
-          >
-            확인
-          </button>
-        </div>
-      </div>
-      <div
-        style={{
-          height: "100vh",
-          width: "100vw",
-          overflow: "hidden",
-          backgroundColor: "black",
-          // position: "absolute",
-          // top: 0,
-          // left: 0,
-        }}
-        ref={containerRef}
-      >
-        <div
-          id="proContainer"
-          style={{
-            width: 120,
+            height: "100vh",
+            width: "100vw",
             overflow: "hidden",
             position: "absolute",
-            top: height / 2 + 50,
-            left: width / 2 + 20,
+            top: 0,
+            left: 0,
+            backgroundColor: "#75c1e7",
+            color: "black",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
           }}
+          ref={loadingRef}
         >
+          <label
+            style={{
+              position: "absolute",
+              bottom: 120,
+              borderRadius: 10,
+            }}
+            className="text-xl mb-5"
+          >
+            착륙 준비중..
+          </label>
           <progress
-            id="progress"
-            ref={progressRef}
-            style={{ opacity: 0 }}
-            value={10}
-            max="100"
+            id="progress2"
+            style={{
+              position: "absolute",
+              bottom: 120,
+              borderRadius: 10,
+            }}
+            value={loadingVal}
+            max={100}
           ></progress>
+          <video width={"100%"} height={"100%"} autoPlay="autoPlay">
+            <source src={video} type="video/mp4" />
+          </video>
         </div>
+      </div>
+
+      {/* grow flower */}
+      <div>
         <div
-          className="font-hand text-xl"
-          style={{
-            position: "absolute",
-            width: 500,
-            overflow: "hidden",
-            left: width / 2 - 250,
-            textAlign: "center",
-            top: 100,
-          }}
-        >
-          {quest}
-        </div>
-        <div
-          className="font-hand text-2xl flex-col"
+          className="font-hand"
           style={
-            snakeEndBool
+            infoFlowerBool
               ? {
                   height: "100vh",
                   width: "100vw",
@@ -1916,9 +1692,6 @@ function Intro() {
                   color: "white",
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
-                  whiteSpace: "pre-wrap",
-                  textAlign: "center",
                 }
               : {
                   height: "100vh",
@@ -1930,87 +1703,323 @@ function Intro() {
                   display: "none",
                 }
           }
-          ref={snakeEndRef}
+          ref={flowerInfoRef}
         >
-          <div>
-            {
-              "모든 것을 드러내려는 세계와\n모든 것을 감싸려고 하는 대지\n세계와 대지가 평행을 이루는 찰나의 순간에\n마침내 진리의 틈이 열린다."
-            }
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}
+            >
+              <h3 className="text-2xl">
+                장미는 물을 좋아했어. 물없이는 살 수 없었지..
+              </h3>
+            </div>
+            <button
+              style={{
+                width: 150,
+                height: 40,
+                borderRadius: 40,
+                backgroundColor: "#FFFFFFC4",
+                color: "black",
+                cursor: "pointer",
+                marginTop: 30,
+              }}
+              onClick={() => {
+                setInfoFlowerBool(false);
+                setInfoFlowerRemove(true);
+                setQuest(
+                  "오른쪽으로 이동해 장미와의 또 다른 추억을 찾아보세요"
+                );
+              }}
+            >
+              확인
+            </button>
           </div>
         </div>
       </div>
 
-      <div
-        className="font-hand"
-        style={
-          infoBool
-            ? {
-                height: "100vh",
-                width: "100vw",
-                overflow: "hidden",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                backgroundColor: "#00000080",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-              }
-            : {
-                height: "100vh",
-                width: "100vw",
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                left: 0,
-              }
-        }
-        ref={infoRef}
-      >
+      {/* bao */}
+      <div>
         <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
+          className="font-hand"
+          style={
+            infoBaoBool
+              ? {
+                  height: "100vh",
+                  width: "100vw",
+                  overflow: "hidden",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  backgroundColor: "#00000080",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                }
+              : {
+                  height: "100vh",
+                  width: "100vw",
+                  position: "absolute",
+                  opacity: 0,
+                  top: 0,
+                  left: 0,
+                  display: "none",
+                }
+          }
+          ref={baoInfoRef}
         >
-          <div style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}>
-            <h3 className="text-3xl font-semibold">
-              키보드를 이용하여 어린왕자를 움직여보세요!
-            </h3>
-            <p>행성을 돌아다니면서 장미와의 추억을 찾아주세요!</p>
-          </div>
-          <button
+          <div
             style={{
-              width: 200,
-              height: 40,
-              borderRadius: 40,
-              backgroundColor: "#FFFFFFC4",
-              color: "black",
-              cursor: "pointer",
-              marginTop: 30,
-            }}
-            onClick={() => {
-              setInfoBool(false);
-              setInfoRemove(true);
-              buttonRef.current = !buttonRef.current;
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            시작하기
-          </button>
+            <div
+              style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}
+            >
+              <h3 className="text-2xl">
+                바오밥나무가 자라면 장미가 위험해 다 크기 전에 뽑아줘야했지..
+              </h3>
+            </div>
+            <button
+              style={{
+                width: 150,
+                height: 40,
+                borderRadius: 40,
+                backgroundColor: "#FFFFFFC4",
+                color: "black",
+                cursor: "pointer",
+                marginTop: 30,
+              }}
+              onClick={() => {
+                setInfoBaoBool(false);
+                setInfoBaoRemove(true);
+                setQuest(
+                  "오른쪽으로 이동해 장미와의 또 다른 추억을 찾아보세요"
+                );
+              }}
+            >
+              확인
+            </button>
+          </div>
         </div>
       </div>
-      <iframe
-        title="autoPlay"
-        src={mySound}
-        allow="autoplay"
-        id="audio"
-        style={{ display: "none" }}
-      ></iframe>
-      <audio id="player" autoplay loop>
-        <source src={mySound} type="audio/mp3" />
-      </audio>
+
+      {/* flower glass */}
+      <div>
+        <div
+          className="font-hand"
+          style={
+            infoGlassFlowerBool
+              ? {
+                  height: "100vh",
+                  width: "100vw",
+                  overflow: "hidden",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  backgroundColor: "#00000080",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                }
+              : {
+                  height: "100vh",
+                  width: "100vw",
+                  position: "absolute",
+                  opacity: 0,
+                  top: 0,
+                  left: 0,
+                  display: "none",
+                }
+          }
+          ref={glassInfoRef}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}
+            >
+              <h3 className="text-2xl whitespace-pre-wrap">
+                {
+                  "저녁이 되면 장미에게 유리관을 덮어줘야 했어\n 내가 사는 행성은 장미에게 너무 추웠거든"
+                }
+              </h3>
+            </div>
+            <button
+              style={{
+                width: 150,
+                height: 40,
+                borderRadius: 40,
+                backgroundColor: "#FFFFFFC4",
+                color: "black",
+                cursor: "pointer",
+                marginTop: 30,
+              }}
+              onClick={() => {
+                setInfoGlassFlowerBool(false);
+                setInfoGlassFlowerRemove(true);
+                setQuest("보아뱀을 찾아보세요");
+              }}
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div
+          style={{
+            height: "100vh",
+            width: "100vw",
+            overflow: "hidden",
+            backgroundColor: "black",
+            // position: "absolute",
+            // top: 0,
+            // left: 0,
+          }}
+          ref={containerRef}
+        >
+          <div
+            id="proContainer"
+            style={{
+              width: 120,
+              overflow: "hidden",
+              position: "absolute",
+              top: height / 2 + 50,
+              left: width / 2 + 20,
+            }}
+          >
+            <progress
+              id="progress"
+              ref={progressRef}
+              style={{ opacity: 0 }}
+              value={10}
+              max="100"
+            ></progress>
+          </div>
+          <div
+            className="font-hand text-xl"
+            style={{
+              position: "absolute",
+              width: 500,
+              overflow: "hidden",
+              left: width / 2 - 250,
+              textAlign: "center",
+              top: 100,
+            }}
+          >
+            {quest}
+          </div>
+          <div></div>
+          <div
+            className="h-[64px] w-[44px] absolute top-6 right-6 bg-[url('/src/assets/images/exit.png')] bg-cover"
+            onClick={() => {
+              setModal(true);
+            }}
+          ></div>
+          {modal && (
+            <SaveModal
+              setModal={setModal}
+              taleBookName={"어린왕자"}
+              status={"princeMain"}
+            ></SaveModal>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <div
+          className="font-hand"
+          style={
+            infoBool
+              ? {
+                  height: "100vh",
+                  width: "100vw",
+                  overflow: "hidden",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  backgroundColor: "#00000080",
+                  color: "white",
+                  display: "flex",
+                  justifyContent: "center",
+                }
+              : {
+                  height: "100vh",
+                  width: "100vw",
+                  position: "absolute",
+                  opacity: 0,
+                  top: 0,
+                  left: 0,
+                }
+          }
+          ref={infoRef}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{ fontSize: "19px", textAlign: "center", lineHeight: 5 }}
+            >
+              <h3 className="text-3xl font-semibold">
+                키보드를 이용하여 어린왕자를 움직여보세요!
+              </h3>
+              <p>행성을 돌아다니면서 장미와의 추억을 찾아주세요!</p>
+            </div>
+            <button
+              style={{
+                width: 200,
+                height: 40,
+                borderRadius: 40,
+                backgroundColor: "#FFFFFFC4",
+                color: "black",
+                cursor: "pointer",
+                marginTop: 30,
+              }}
+              onClick={() => {
+                setInfoBool(false);
+                setInfoRemove(true);
+                buttonRef.current = !buttonRef.current;
+              }}
+            >
+              시작하기
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <span>
+        <iframe
+          title="autoPlay"
+          src={mySound}
+          allow="autoplay"
+          id="audio"
+          style={{ display: "none" }}
+        ></iframe>
+        <audio id="player" autoplay loop>
+          <source src={mySound} type="audio/mp3" />
+        </audio>
+      </span>
     </>
   );
 }
