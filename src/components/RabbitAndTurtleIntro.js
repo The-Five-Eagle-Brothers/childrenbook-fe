@@ -3,10 +3,12 @@ import video from "../assets/videos/take01.mp4";
 import video2 from "../assets/videos/take02.mp4";
 import video3 from "../assets/videos/take03.mp4";
 import { useEffect, useRef, useState } from "react";
+import SaveModal from "./atoms/SaveModal";
 
-function VideoIntro() {
+function RabbitAndTurtleIntro() {
   const videoRef = useRef(null);
   const [next, setNext] = useState(0);
+  const [modal, setModal] = useState(false);
   const navigate = useNavigate();
 
   const sentences = [
@@ -30,17 +32,17 @@ function VideoIntro() {
     >
       <div className="flex flex-col items-center justify-center h-screen">
         {next === 0 && (
-          <video width={"100%"} autoPlay="autoPlay">
+          <video width={"100%"} height={"100%"} autoPlay="autoPlay">
             <source src={video} type="video/mp4" />
           </video>
         )}
         {next === 1 && (
-          <video width={"100%"} autoPlay="autoPlay">
+          <video width={"100%"} height={"100%"} autoPlay="autoPlay">
             <source src={video2} type="video/mp4" />
           </video>
         )}
         {next === 2 && (
-          <video width={"100%"} autoPlay="autoPlay">
+          <video width={"100%"} height={"100%"} autoPlay="autoPlay">
             <source src={video3} type="video/mp4" />
           </video>
         )}
@@ -67,7 +69,20 @@ function VideoIntro() {
           {sentences[next]}
         </div>
       </div>
+      <div
+        className="h-[64px] w-[44px] absolute top-6 right-6 bg-[url('/src/assets/images/exit.png')] bg-cover"
+        onClick={() => {
+          setModal(true);
+        }}
+      ></div>
+      {modal && (
+        <SaveModal
+          setModal={setModal}
+          taleBookName={"토끼와 거북이"}
+          status={"rabbitAndTurtleIntro"}
+        ></SaveModal>
+      )}
     </div>
   );
 }
-export default VideoIntro;
+export default RabbitAndTurtleIntro;
